@@ -41,10 +41,10 @@ int main()
 	int n_processes; //Total Processes
 	int mem_size;
 	cin>>n_processes;
-	cout<<"Enter Memory Size";
+	cout<<"Enter Memory Size ";
 	cin>>mem_size;
 	int i,j,k ;   //Helper variables
-	cout<<"Enter all process attributes \n";
+	cout<<"Enter all processes attributes \n";
 	// run a for loop to get all the attributes of the input
 	for(i=0;i<n_processes;i++)
 	{
