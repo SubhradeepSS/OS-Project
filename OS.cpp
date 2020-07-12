@@ -30,21 +30,21 @@ vector<Process> input_array ; //To store all the processes in Input
 int main()
 {
 	int type_of_fit; //Type of algorithm to run
-	cout<<"Press 1 for first fit,2 for best fir , and 3 for worst fit";
+	cout<<"Press 1 for first fit,2 for best fir , and 3 for worst fit ";
 	cin>>type_of_fit;
 	while(type_of_fit<1||type_of_fit>3)
 	{
-		cout<<"Enter a valid number between 1-3";
+		cout<<"Enter a valid number between 1-3 ";
 		cin>>type_of_fit;
 	}
-	cout<<"Enter the number of processes";
+	cout<<"Enter the number of processes ";
 	int n_processes; //Total Processes
 	int mem_size;
 	cin>>n_processes;
 	cout<<"Enter Memory Size";
 	cin>>mem_size;
 	int i,j,k ;   //Helper variables
-	cout<<"Enter all process attributes";
+	cout<<"Enter all process attributes \n";
 	// run a for loop to get all the attributes of the input
 	for(i=0;i<n_processes;i++)
 	{
