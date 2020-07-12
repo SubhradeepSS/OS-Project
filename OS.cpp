@@ -65,4 +65,10 @@ int main()
 		}
 		input_array.push_back(p);
 	}
+	sort(input_array.begin(),input_array.end(),[](Process a,Process b){return a.arrival_time<b.arrival_time;});
+	for(i=0;i<input_array.size();i++)
+	{
+		cout<<input_array[i].arrival_time<<" ";
+	}
+	cout<<endl;
 }
