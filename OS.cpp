@@ -25,3 +25,5 @@ public:
 };
 
 queue<Process> Queue;
+vector<Process> input_array ; //To store all the processes in Input 
+
