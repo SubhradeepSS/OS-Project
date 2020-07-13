@@ -492,18 +492,5 @@ int main()
 
     list<Process>::iterator it;
     input_array.sort(PlayerComparator());
-    Process pt;
-    vector<int> az = {3, 4, 5};
-    pt.segments = az;
-    pt.id = 1;
-    list<mem_unit> lll;
-    mem_unit a1, a2, a3;
-    a1.is_empty = 1;
-    a1.size = 2;
-    a2.is_empty = 1;
-    a2.size = 3;
-    lll.push_back(a1);
-    lll.push_back(a2);
-    //cout << checkPossible(pt, lll) << endl;
     firstfit(input_array, mem_size);
 }
