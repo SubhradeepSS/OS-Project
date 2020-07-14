@@ -71,7 +71,7 @@ void printQ(int t, list<Process> q)
     }
     cout << endl;
 }
-int checkPossible(Process p, list<mem_unit> mem_list)
+int checkPossiblef(Process p, list<mem_unit> mem_list)
 {
     list<mem_unit> m(mem_list);
     list<mem_unit>::iterator i;
@@ -121,30 +121,7 @@ int checkPossible(Process p, list<mem_unit> mem_list)
     return flag;
 }
 
-void printMem(list<mem_unit> units, int t)
-{
-    list<mem_unit>::iterator i;
-    cout << "---------Memory STATUS---------------- at Time t = " << t << endl;
-    for (i = units.begin(); i != units.end(); i++)
-    {
-        mem_unit temp = (*i);
-        if (temp.is_empty == 1)
-        {
-            cout << "Hole Present :-"
-                 << " Size :-" << temp.size
-                 << " Location :-" << temp.start_location << "-" << temp.end_location << endl;
-        }
-        else
-        {
-            cout << "Process :-" << temp.p.id << " "
-                 << "Segment :-" << temp.psegment << " Size :-" << temp.size
-                 << " Location :-" << temp.start_location << "-" << temp.end_location << endl;
-        }
-        cout << endl;
-    }
-}
-
-list<mem_unit> addProcess(Process p, list<mem_unit> m, int t)
+list<mem_unit> addProcessf(Process p, list<mem_unit> m, int t)
 {
     //list<mem_unit> m(mem_list);
     list<mem_unit>::iterator i;
