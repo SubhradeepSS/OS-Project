@@ -370,13 +370,14 @@ int checkPossiblef(Process p, list<mem_unit> mem_list)
     list<mem_unit> m(mem_list);
     list<mem_unit>::iterator i;
     vector<int> seg = p.segments;
-    int status[seg.size()] = {};
+    int status[seg.size()];
     for (int j = 0; j < seg.size(); j++)
         status[j] = 0;
     for (int j = 0; j < seg.size(); j++)
     {
         int s; //size of segment i of process p;
         s = seg[j];
+        list<mem_unit>::iterator ans_it = m.end();
         for (i = m.begin(); i != m.end(); i++)
         {
             mem_unit temp = (*i);
@@ -384,33 +385,42 @@ int checkPossiblef(Process p, list<mem_unit> mem_list)
             {
                 if (temp.size >= s)
                 {
-                    status[j] = 1;
-                    mem_unit t1;
-                    t1.p = p;
-                    //t1.p.entry_time = t;
-                    t1.is_empty = 0;
-                    t1.size = s;
-                    (*i).size -= s;
-
-                    t1.psegment = j;
-                    t1.start_location = temp.start_location;
-                    t1.end_location = t1.start_location + s - 1;
-                    (*i).start_location = t1.end_location + 1;
-                    if ((*i).size == 0)
-                        (*i) = t1;
-                    else
-                        m.insert(i, t1);
-                    //i--;
+                    ans_it = i;
+                    break;
                 }
             }
+        }
+
+        if (ans_it != m.end())
+        {
+
+            status[j] = 1;
+            mem_unit t1, temp;
+            temp = *ans_it;
+            t1.p = p;
+            //t1.p.entry_time = t;
+            t1.is_empty = 0;
+            t1.size = s;
+            (*ans_it).size -= s;
+
+            t1.psegment = j;
+            t1.start_location = temp.start_location;
+            t1.end_location = t1.start_location + s - 1;
+            (*ans_it).start_location = t1.end_location + 1;
+            if ((*ans_it).size == 0)
+                (*ans_it) = t1;
+            else
+                m.insert(ans_it, t1);
         }
     }
     int flag = 1;
     for (int j = 0; j < seg.size(); j++)
     {
         if (status[j] == 0)
+        {
             flag = 0;
-        break;
+            break;
+        }
     }
     return flag;
 }
@@ -424,30 +434,40 @@ list<mem_unit> addProcessf(Process p, list<mem_unit> m, int t)
     {
         int s; //size of segment i of process p;
         s = seg[j];
-        for (i = m.begin(); i != m.end(); ++i)
+        list<mem_unit>::iterator ans_it = m.end();
+        for (i = m.begin(); i != m.end(); i++)
         {
             mem_unit temp = (*i);
             if (temp.is_empty == 1)
             {
                 if (temp.size >= s)
                 {
-                    mem_unit t1;
-                    t1.p = p;
-                    t1.p.entry_time = t;
-                    t1.is_empty = 0;
-                    t1.size = s;
-                    (*i).size -= s;
-
-                    t1.psegment = j;
-                    t1.start_location = temp.start_location;
-                    t1.end_location = t1.start_location + s - 1;
-                    (*i).start_location = t1.end_location + 1;
-                    if ((*i).size == 0)
-                        (*i) = t1;
-                    else
-                        m.insert(i, t1);
+                    ans_it = i;
+                    break;
                 }
             }
+        }
+
+        if (ans_it != m.end())
+        {
+
+            // status[j] = 1;
+            mem_unit t1, temp;
+            temp = *ans_it;
+            t1.p = p;
+            t1.p.entry_time = t;
+            t1.is_empty = 0;
+            t1.size = s;
+            (*ans_it).size -= s;
+
+            t1.psegment = j;
+            t1.start_location = temp.start_location;
+            t1.end_location = t1.start_location + s - 1;
+            (*ans_it).start_location = t1.end_location + 1;
+            if ((*ans_it).size == 0)
+                (*ans_it) = t1;
+            else
+                m.insert(ans_it, t1);
         }
     }
     printMem(m, t);
@@ -774,7 +794,7 @@ int main()
     cout << "Enter the number of processes: ";
     cin >> n_processes;
 
-    cout<<"Enter process details as stated:\n";
+    cout << "Enter process details as stated:\n";
 
     int i, j, k; //Helper variables
     // run a for loop to get all the attributes of the input
@@ -786,7 +806,7 @@ int main()
         cout << "\nProcess ID: ";
         cin >> p_id;
 
-        cout << "Process Arrival Time: ";                         //Get id
+        cout << "Process Arrival Time: "; //Get id
         cin >> p_arrival_time;
 
         cout << "Process Lifetime: ";
@@ -810,21 +830,21 @@ int main()
 
     input_array.sort(PlayerComparator());
 
-    while(1){
-    	cout << "\nPress 1 for first fit or 2 for best fit or 3 for worst fit or any other number key for exiting: ";
-    	cin >> type_of_fit;
-    	turnaround = 0.0;
+    while (1)
+    {
+        cout << "\nPress 1 for first fit or 2 for best fit or 3 for worst fit or any other number key for exiting: ";
+        cin >> type_of_fit;
+        turnaround = 0.0;
 
-    	if (type_of_fit == 1)
-        	firstfit(input_array, mem_size);
-		else if (type_of_fit == 2)
-		    bestfit(input_array, mem_size);
-		else if (type_of_fit == 3)
-		    worstfit(input_array, mem_size);
-		else
-			break;
+        if (type_of_fit == 1)
+            firstfit(input_array, mem_size);
+        else if (type_of_fit == 2)
+            bestfit(input_array, mem_size);
+        else if (type_of_fit == 3)
+            worstfit(input_array, mem_size);
+        else
+            break;
 
-		cout << "\nAverage turnaround time is: " << turnaround / n_processes << endl;
+        cout << "\nAverage turnaround time is: " << turnaround / n_processes << endl;
     }
-
 }
