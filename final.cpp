@@ -1,8 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 template <class Compare>
 void sort(Compare comparator);
-float turnaround = 0;
+float turnaround;
+
 class Process
 {
 public:
@@ -42,7 +44,7 @@ public:
 
 void printu(list<mem_unit> units)
 {
-    cout << "Printing units\n";
+    cout << "Printing units:\n";
     list<mem_unit>::iterator i, j;
     for (i = units.begin(); i != units.end(); ++i)
     {
@@ -53,8 +55,8 @@ void printQ(int t, list<Process> q)
 {
     if (!q.empty())
     {
-        cout << "---------------Queue Status-----------" << endl;
-        cout << "At time " << t << " these are the processes present in Queue" << endl;
+        cout << "---------------QUEUE STATUS-----------" << endl;
+        cout << "At time t = " << t << ", these are the processes present in Queue:" << endl;
         // cout << "Done";
         list<Process>::iterator i;
         // cout << "Done";
@@ -62,8 +64,8 @@ void printQ(int t, list<Process> q)
         {
             //cout << "Done";
             Process temp = (*i);
-            cout << "Process " << temp.id << " ";
-            cout << "Arrival Time " << temp.arrival_time << " " << endl;
+            cout << "Process: " << temp.id << " ";
+            cout << "Arrival Time: " << temp.arrival_time << " " << endl;
         }
     }
     else
@@ -75,21 +77,21 @@ void printQ(int t, list<Process> q)
 void printMem(list<mem_unit> units, int t)
 {
     list<mem_unit>::iterator i;
-    cout << "---------Memory STATUS---------------- at Time t = " << t << endl;
+    cout << "\n----------------MEMORY STATUS---------------- at time t = " << t << endl;
     for (i = units.begin(); i != units.end(); i++)
     {
         mem_unit temp = (*i);
         if (temp.is_empty == 1)
         {
-            cout << "Hole Present :-"
-                 << " Size :-" << temp.size
-                 << " Location :-" << temp.start_location << "-" << temp.end_location << endl;
+            cout << "Hole Present :- "
+                 << " Size :- " << temp.size
+                 << " Location :- " << temp.start_location << " - " << temp.end_location << endl;
         }
         else
         {
-            cout << "Process :-" << temp.p.id << " "
-                 << "Segment :-" << temp.psegment << " Size :-" << temp.size
-                 << " Location :-" << temp.start_location << "-" << temp.end_location << endl;
+            cout << "Process :- " << temp.p.id << " "
+                 << "Segment :- " << temp.psegment << " Size :-" << temp.size
+                 << " Location :- " << temp.start_location << " - " << temp.end_location << endl;
         }
         cout << endl;
     }
@@ -520,7 +522,7 @@ list<mem_unit> checkifover(list<mem_unit> units, int t)
                         }
                     }
                     turnaround += (t - a.arrival_time);
-                    cout << "Process " << a.id << " is completed and removed at time t = " << t << endl;
+                    cout << "Process: " << a.id << " is completed and removed at time t = " << t << endl;
                     printMem(units, t);
                 }
             }
@@ -598,7 +600,7 @@ void worstfit(list<Process> input_array, int memory_size)
             if (b == 1)
             {
                 it = Queue.erase(it);
-                cout << "Process " << a.id << " added at time " << t << endl;
+                cout << "Process: " << a.id << " added at time t = " << t << endl;
                 list<mem_unit> temp;
                 temp = addProcessw(a, units, t);
                 units = temp;
@@ -671,7 +673,7 @@ void bestfit(list<Process> input_array, int memory_size)
             if (b == 1)
             {
                 it = Queue.erase(it);
-                cout << "Process " << a.id << " added at time " << t << endl;
+                cout << "Process: " << a.id << " added at time t = " << t << endl;
                 list<mem_unit> temp;
                 temp = addProcessb(a, units, t);
                 units = temp;
@@ -742,7 +744,7 @@ void firstfit(list<Process> input_array, int memory_size)
             if (b == 1)
             {
                 it = Queue.erase(it);
-                cout << "Process " << a.id << " added at time " << t << endl;
+                cout << "Process: " << a.id << " added at time t = " << t << endl;
                 list<mem_unit> temp;
                 temp = addProcessf(a, units, t);
                 units = temp;
@@ -765,12 +767,14 @@ int main()
 {
     list<Process> input_array;
     int type_of_fit, n_processes, mem_size; //Type of algorithm to run
-    cout << "Press 1 for first fit,2 for best fir , and 3 for worst fit ";
-    cin >> type_of_fit;
-    cout << "Enter Memory Size ";
+
+    cout << "\nEnter Memory Size: ";
     cin >> mem_size;
-    cout << "Enter the number of processes ";
+
+    cout << "Enter the number of processes: ";
     cin >> n_processes;
+
+    cout<<"Enter process details as stated:\n";
 
     int i, j, k; //Helper variables
     // run a for loop to get all the attributes of the input
@@ -778,15 +782,26 @@ int main()
     {
         int p_id, p_arrival_time, p_lifetime, p_segments;
         Process p;
-        cin >> p_id;                         //Get id
-        cin >> p_arrival_time >> p_lifetime; //Get arrival time and lifetime
+
+        cout << "\nProcess ID: ";
+        cin >> p_id;
+
+        cout << "Process Arrival Time: ";                         //Get id
+        cin >> p_arrival_time;
+
+        cout << "Process Lifetime: ";
+        cin >> p_lifetime; //Get arrival time and lifetime
+
+        cout << "No of segments of Process: ";
         cin >> p_segments;
+        cout << "Enter size of segments separated by space: ";
         for (j = 0; j < p_segments; j++)
         {
             int seg_size;
             cin >> seg_size;
             p.segments.push_back(seg_size);
         } //Get number of segments
+
         p.id = p_id;
         p.arrival_time = p_arrival_time;
         p.lifetime = p_lifetime;
@@ -794,11 +809,22 @@ int main()
     }
 
     input_array.sort(PlayerComparator());
-    if (type_of_fit == 1)
-        firstfit(input_array, mem_size);
-    if (type_of_fit == 2)
-        bestfit(input_array, mem_size);
-    if (type_of_fit == 3)
-        worstfit(input_array, mem_size);
-    cout << "Average turnaround time is " << turnaround / n_processes << endl;
+
+    while(1){
+    	cout << "\nPress 1 for first fit or 2 for best fit or 3 for worst fit or any other number key for exiting: ";
+    	cin >> type_of_fit;
+    	turnaround = 0.0;
+
+    	if (type_of_fit == 1)
+        	firstfit(input_array, mem_size);
+		else if (type_of_fit == 2)
+		    bestfit(input_array, mem_size);
+		else if (type_of_fit == 3)
+		    worstfit(input_array, mem_size);
+		else
+			break;
+
+		cout << "\nAverage turnaround time is: " << turnaround / n_processes << endl;
+    }
+
 }
